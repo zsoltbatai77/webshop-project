@@ -1,0 +1,75 @@
+<html lang="en">
+<%- include("../partials/header.ejs") %>
+<body>
+  <%- include("../partials/nav.ejs") %>
+  <div style="width: 70%; background-color: #b5d2da; margin: auto; padding: 2%; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+    
+    <form name="editBookForm" id="editBookForm" method="post">
+      <label for="title">Title: </label>
+      <input style="width: 250px" type="text" name="title" id="title" required value="<%=book.title%>"><br><br>
+
+      <label for="author">Author: </label>
+      <input style="width: 250px" type="text" name="author" id="author" required value="<%=book.author%>"><br><br>
+
+      <label for="price">Price: </label>
+      <input style="width: 80px;" type="number" name="price" id="price" required value="<%=book.price%>"><br><br>
+
+      <label for="year">Year: </label>
+      <input style="width: 60px;" type="number" name="year" id="year" required value="<%=book.year%>"><br><br>
+
+      <label for="category">Category: </label>
+      <input type="text" name="category" id="category" required value="<%=book.category%>"><br><br>
+
+      <label for="description">Description: </label>
+      <input style="width: 90%; height: 30px;" type="text" name="description" id="description" required value="<%=book.description%>"><br><br>
+
+      <label for="rating">Rating: </label>
+      <input style="width: 40px;" type="number" name="rating" id="rating" required value="<%=book.rating%>"><br><br>
+
+      <label for="isBestSeller">Best Seller? </label>
+      <input type="checkbox" name="isBestSeller" id="isBestSeller" <%if(book.isBestSeller){%>checked<%}%>><br><br>
+
+      <label for="imagePath">Image path: </label>
+      <input style="width: 500px;" type="text" name="imagePath" id="imagePath" required value="<%=book.imagePath%>"><br><br>
+
+      <button type="submit">Update book</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('editBookForm').addEventListener('submit', async function(event)
+    {
+      event.preventDefault(); // Prevent the default form submission
+
+      const userConfirmed = confirm("Are you sure you want to change the information of this book?");
+      if(userConfirmed)
+      {
+        const formData = new FormData(this);
+        const bookId = "<%=book._id%>";
+        const payload = {};
+        
+        formData.forEach((value, key) => {
+            payload[key] = value;
+        });
+        
+        const response = await fetch('/books/update/' + bookId, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+
+        if (response.ok)
+        {
+          window.location.href = "/admin?status=updated";
+        } else {
+          console.error('failed to update data');
+        }
+      }
+    });
+    </script>
+
+  <%- include("../partials/footer.ejs") %>
+</body>
+</html>

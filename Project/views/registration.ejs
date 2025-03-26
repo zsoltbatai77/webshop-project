@@ -1,0 +1,42 @@
+<html lang="en">
+<%- include("partials/header.ejs") %>
+
+<body>
+  <%- include("partials/nav.ejs") %>
+  <script type="text/javascript">
+    function validateSignInForm()
+    {
+      if(document.forms["signInForm"]["password"].value == document.forms["signInForm"]["confirmPassword"].value) return true;
+      alert("The passwords do not match!");
+      return false;
+    }
+  </script>
+      <link rel="stylesheet" href="/css/upload.css">
+
+      <main class="register-container">
+        <h1 class="register-title">Register</h1>
+
+        <div>
+          <form name="signInForm" method="post" onsubmit="return validateSignInForm()" action="/submitregistration">
+            
+            <label for="email">E-mail:</label>
+            <input type="email" name="email" id="email" required placeholder="example@gmail.com">
+
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required placeholder="ex. JohnDoe">
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" name="confirmPassword" id="confirmPassword" required>
+
+            <button type="submit" name="register" class="register-button">Register</button>
+
+          </form>
+        </div>
+
+      </main>
+  <%- include("partials/footer.ejs") %>
+</body>
+</html>

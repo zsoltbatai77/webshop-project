@@ -1,0 +1,29 @@
+<html lang="en">
+  <%- include("partials/header.ejs") %>
+
+  <body>
+    <%- include("partials/nav.ejs") %>
+    <link rel="stylesheet" href="/css/upload.css">
+    <main class="signin-container">
+      <h1 class="signin-title">Sign in</h1>
+
+      <div>
+        <form name="signInForm" method="post" action="/submitsignin">
+          <label for="email">E-mail:</label>
+          <input type="email" name="email" id="email" required placeholder="example@gmail.com">
+
+          <label for="password">Password:</label>
+          <input type="password" name="password" id="password" required placeholder="********">
+
+          <button type="submit" name="login" class="register-button">Sign in</button>
+        </form>
+      </div>
+
+      <div class="register-footer">
+        <p>Don't have an account? <a href="/register">Register here</a></p>
+      </div>
+    </main>
+
+    <%- include("partials/footer.ejs") %>
+  </body>
+</html>

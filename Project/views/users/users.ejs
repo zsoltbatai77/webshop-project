@@ -1,0 +1,23 @@
+<html lang="en">
+<%- include("../partials/header.ejs", { title: "Users" }) %>
+<body>
+    <%- include("../partials/nav.ejs") %>
+
+    <a href="/users/new" class="add-user-button">Add New User</a>
+
+    <ul>
+        <% users.forEach(user => { %>
+            <li class="user-info">
+                <p>Username: <%= user.name %></p>
+                <p>Email: <%= user.email %></p>
+                <p>Address: <%= user.address %></p>
+                <p>Admin: <%= user.adminPrivileges %></p>
+            </li>
+        <% }); %>
+    </ul>
+    <div>
+        
+    </div>
+    <%- include("../partials/footer.ejs") %>
+</body>
+</html>

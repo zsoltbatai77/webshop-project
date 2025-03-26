@@ -1,0 +1,25 @@
+{
+  "name": "webshop",
+  "version": "1.0.0",
+  "description": "- Go to the [Node.js website](https://nodejs.org/) and download the recommended version.\r - Install Node.js on your computer using the installer.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "bcrypt-nodejs": "^0.0.3",
+    "cookie-parser": "^1.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "mongodb": "^6.10.0",
+    "mongoose": "^8.7.3",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.16",
+    "webshop": "file:"
+  }
+}

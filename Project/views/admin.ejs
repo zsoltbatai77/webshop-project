@@ -1,0 +1,83 @@
+<html lang="en">
+<%- include("partials/header.ejs") %>
+<script>
+
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('status') === 'created'){
+    alert('Book created successfully');
+  }
+  if (urlParams.get('status') === 'updated'){
+    alert('Book updated successfully');
+  } 
+
+  urlParams.delete('status');
+  window.history.replaceState({}, '', `${window.location.pathname}`);
+
+  function deletebook(id)
+  {
+    const userConfirmed = confirm("Are you sure you want to delete this book?");
+    if(userConfirmed)
+    {
+      fetch('/books/delete/' + id, {
+        method: 'DELETE'
+      })
+      location.reload();
+      }
+  }
+
+  function deleteuser(id)
+  {
+    const userConfirmed = confirm("Are you sure you want to delete this book?");
+    if(userConfirmed)
+    {
+      fetch('/deleteuser/' + id, {
+        method: 'DELETE'
+      })
+      location.reload();
+    }
+  }
+
+</script>
+<body>
+  <%- include("partials/nav.ejs") %>
+  <div class="books content" style="display: flex; justify-content: space-between; align-items: flex-start;">
+      <div style="width: 46%; background-color: #b5d2da; margin: 1.5%; padding: 10px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); position: relative; left: 0.5%;">
+        <h3>Könyv kezelés</h3>
+        <a style="text-decoration: none; color: black;" href="/books/createbook">
+        <div style="height: 40px; border-radius: 5px; background-color: #a6ff94; line-height: 40px; margin: 5px; padding-left: 10px; display: flex;">
+          + Könyv hozzáadása
+        </div>
+        </a>
+        <% books.forEach(book => { %>
+          <div style="height: 40px; border-radius: 5px; background-color: #80b1be; line-height: 40px; margin: 5px; padding-left: 10px; display: flex;">
+            <%= book.title %>
+            <div style="margin-left: auto; display: flex;" >
+              <a href="/books/editbook/<%=book._id%>"><button style="height: 40px; background-color: rgb(143, 255, 143);">Szerkesztés</button></a>
+              <button style="background-color: rgb(255, 173, 173);" onclick="deletebook('<%=book._id%>')">Törlés</button>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+      <div style="width: 46%; background-color: #b5d2da; margin: 1.5%; padding: 10px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); position: relative; right: 0.5%;">
+        <h3>Felhasználó kezelés</h3>
+        <a style="text-decoration: none; color: black;" href="/users/new">
+          <div style="height: 40px; border-radius: 5px; background-color: #a6ff94; line-height: 40px; margin: 5px; padding-left: 10px; display: flex;">
+            + Felhasználó hozzáadása
+          </div>
+        </a>
+        <% users.forEach(user => { %>
+          <div style="height: 55px; border-radius: 5px; background-color: #80b1be; line-height: 25px; margin: 5px; padding-top: 5px; padding-left: 10px; display: flex;">
+          E-mail:   <%= user.email %><br>
+          Name:   <%= user.name %>
+          <div style="margin-left: auto; display: flex; margin-top: -5px;" >
+            <a href="/users/edituser/<%=user._id%>"><button style="height: 60px; background-color: rgb(143, 255, 143);">Szerkesztés</button></a>
+            <button style="width: 60; background-color: rgb(255, 173, 173);" onclick="deleteuser('<%=user._id%>')">Törlés</button>
+          </div>
+          </div>
+        <% }) %>
+      </div>
+  </div>
+  <%- include("partials/footer.ejs") %>
+</body>
+</html>

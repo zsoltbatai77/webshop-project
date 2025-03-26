@@ -1,0 +1,24 @@
+<nav>
+    <div class="site-title">
+        <a href="/"><h1>Book Webshop</h1></a>
+    </div>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/books">Books</a></li>
+        <li><a href="/bestsellers">Bestsellers</a></li>
+        <% if (!isAuthenticated) { %>
+            <li><a href="/signin">Sign in</a></li>
+            <li><a href="/register">Register</a></li>
+        <% } else { %>
+            
+            <li><a href="/cart">Cart</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/signout">Sign out</a></li>
+            <% if (isAdmin) { %>
+                <li><a href="/admin">Administration</a></li>
+                <li><a href="/users">Users</a></li> <!-- Módosítás -->
+            <% } %>
+        <% } %>
+    </ul>
+</nav>

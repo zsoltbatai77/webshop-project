@@ -1,0 +1,47 @@
+<html lang="hu">
+<%- include("../partials/header.ejs") %>
+
+<body>
+  <%- include("../partials/nav.ejs") %>
+
+  <div class="cart content">
+    <h2>Cart</h2>
+
+    <% if (cart && cart.items.length > 0) { %>
+      <div class="cart-items">
+        <% cart.items.forEach(item => { %>
+          <div class="cart-item">
+            <img src="<%= item.book.imagePath %>" alt="<%= item.book.title %>" class="cart-item-image">
+            <div class="cart-item-info">
+              <h3 class="title"><%= item.book.title %></h3>
+              <p class="price">Ár: <%= item.book.price %> Ft</p>
+              <div class="quantity-control">
+                <button class="quantity-btn minus" data-book-id="<%= item.book._id %>">-</button>
+                <span class="quantity-display" data-book-id="<%= item.book._id %>">
+                  <%= item.quantity %>
+                </span>
+                <button class="quantity-btn plus" data-book-id="<%= item.book._id %>">+</button>
+              </div>
+              <p class="total">Összesen: <%= item.quantity * item.book.price %> Ft</p>
+              <form action="/cart/delete/<%= item.book._id %>" method="POST" class="delete-form">
+                <button type="submit" class="delete-btn">Törlés</button>
+              </form>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+
+      <div class="cart-summary">
+        <p>Teljes összeg: <span><%= cart.totalAmount %></span> Ft</p>
+        <button class="checkout-btn">Tovább a fizetéshez</button>
+      </div>
+    <% } else { %>
+      <p class="empty-cart">A kosarad üres.</p>
+    <% } %>
+  </div>
+
+  <%- include("../partials/footer.ejs") %>
+
+  <script src="/js/cart.js"></script>
+</body>
+</html>

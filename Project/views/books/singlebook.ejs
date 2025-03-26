@@ -1,0 +1,60 @@
+<html lang="en">
+  <%- include("../partials/header.ejs") %>
+  <body>
+    <%- include("../partials/nav.ejs") %>
+    <link rel="stylesheet" href="/css/singlebook_style.css">
+
+    <div class="content-container">
+      
+      <div class="content-image-container">
+        <img src="<%= book.imagePath %>" alt="<%= book.title %>" class="content-image">
+      </div>
+
+     
+      <div class="content-details">
+        <h1 class="content-title"><%= book.title %></h1>
+        <h3 class="content-author"><%= book.author %> (Author)</h3>
+        <h3 class="content-category">
+            <%= book.category %> (<%= book.year %>)
+        </h3>
+
+        <h3 class="content-description"><strong>Description:</strong></h3>
+        <p class="description-text"><%= book.description %></p>
+
+        
+        <h3 class="content-price">
+            <strong>Price:</strong> <%= book.price %> Ft
+        </h3>
+
+        
+        <h3 class="content-rating">
+            <strong>Rating:</strong> <%= book.rating %> / 5
+        </h3>
+        <% if (book.isBestSeller) { %>
+            <h3 class="content-bestseller"><strong>Bestseller</strong></h3>
+        <% } %>
+
+        
+        <div class="book-actions">
+            <form action="/cart/add" method="POST" onsubmit="return checkLogin(event)">
+                <input type="hidden" name="bookId" value="<%= book._id %>">
+                <button type="submit" class="add-to-cart">Kosárba</button>
+            </form>
+        </div>
+      </div>
+    </div>
+
+    
+    <script>
+      function checkLogin(event) {
+        const isAuthenticated = <%= JSON.stringify(isAuthenticated) %>;
+        if (!isAuthenticated) {
+          event.preventDefault();  
+          alert("Please sign in to add items to the cart.");
+        }
+      }
+    </script>
+
+    <%- include("../partials/footer.ejs") %>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+<html lang="en">
+<%- include("../partials/header.ejs") %>
+<body>
+  <%- include("../partials/nav.ejs") %>
+  
+  
+  <div class="books content">
+      <h2>Bestsellers</h2>
+  
+      <% var count = 0;
+      if (books.length > 0) { %>
+        <div class="book-container">
+          <% books.forEach(book => { 
+            if(book.isBestSeller == true){
+              count++;%>
+              <div class="book-item">
+                
+                <a href="/books/<%= book._id %>" class="book-link">
+                  <img src="<%= book.imagePath %>" alt="<%= book.title %>" class="book-image">
+                  <h3 class="title"><%= book.title %></h3>
+                </a>
+                <p class="description"><%= book.description %></p>
+                
+                <form action="/cart/add" method="POST" onsubmit="checkLogin(event)">
+                  <input type="hidden" name="bookId" value="<%= book._id %>">
+                  <button type="submit" class="add-to-cart-button">Kosárba</button>
+                </form>
+              
+                <script>
+                  
+                  function checkLogin(event) {
+                    const isAuthenticated = <%= JSON.stringify(isAuthenticated) %>;
+                    if (!isAuthenticated) {
+                      event.preventDefault(); 
+                      alert("Please sign in to add items to the cart.");
+                    }
+                  }
+                </script>
+              </div>
+              
+          <% }}) %>
+          <%if(count == 0){%><p>There are no bestsellers to display...</p><%}%>
+        </div>
+      <% } else { %>
+        <p>There are no books to display...</p>
+      <% } %>
+      
+  </div>
+  <%- include("../partials/footer.ejs") %>
+</body>
+</html>

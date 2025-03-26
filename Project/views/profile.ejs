@@ -1,0 +1,119 @@
+<html lang="en">
+<%- include("partials/header.ejs") %>
+
+<body>
+  <%- include("partials/nav.ejs") %>
+  
+  <script type="text/javascript">
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('status') === 'updated')
+    {
+      alert('Data updated successfully');
+    }
+    else if (urlParams.get('status') === 'passwordupdated')
+    {
+      alert('Password changed successfully');
+    }
+    urlParams.delete('status');
+    window.history.replaceState({}, '', `${window.location.pathname}`);
+
+    function validateSignInForm()
+    {
+      if(document.forms["signInForm"]["password"].value == document.forms["signInForm"]["confirmPassword"].value) return true;
+      alert("The passwords do not match!");
+      return false;
+    }
+  </script>
+
+  <div class="books content">
+      <div style="width: 30%; background-color: #b5d2da; margin: auto; margin-top: 3%; margin-bottom: 3%; padding: 0.5% 2% 0.5% 2%; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); line-height: 30px;">
+
+        <a style="float: right;" href="/changeuserinfo"><button>Change Info</button></a>
+        Name: <%=username%><br>
+        Email: <%=email%><br>
+        Address: <%if(!address || address == null){%>
+          <span style="color: rgb(204, 3, 3);"><%="You have yet to set a shipping address.";%></span>
+          <%}else{%>
+          <%=address%>
+          <%}%>
+          <br><br>
+        <div style="width: 95%; margin: auto; background-color: #80b1be; padding-left: 15px; border-radius: 5px;">
+          <b style="line-height: 50px;">Change password:</b>
+          <span id="passwordMsg" style="color: red;"></span>
+
+          <form name="changePasswordForm" id="changePasswordForm">
+
+            <label for="oldPassword">Old password: </label>
+            <input type="password" name="oldPassword" id="oldPassword" required><br><br>
+
+            <label for="newPassword">New password: </label>
+            <input type="password" name="newPassword" id="newPassword" required><br>
+
+            <label for="newPasswordAgain">password again: </label>
+            <input type="password" name="newPasswordAgain" id="newPasswordAgain" required><br><br>
+
+            <button type="submit" name="passwordchange">Change</button><br><br>
+          </form>
+        </div>
+      </div>
+      
+  </div>
+
+  <script type="text/javascript">
+    
+    document.getElementById('changePasswordForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      if(document.getElementById('oldPassword').value == document.getElementById('newPassword').value)
+      {
+        alert("The new password is the same as the old password!");
+      }
+      else if(document.getElementById('newPassword').value != document.getElementById('newPasswordAgain').value)
+      {
+        alert("The new passwords do not match!");
+      }
+      else
+      {
+        if(confirmation())
+        {
+          var formData = new FormData(this);
+          var data = {};
+          formData.forEach((value, key) => {
+              data[key] = value;
+          });
+          const response = await fetch("/changepassword",{
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          });
+
+          if(response.status == 403)
+          {
+            document.getElementById("passwordMsg").innerHTML = "<br>Incorrect password";
+          }
+          else
+          {
+            if (response.ok)
+            {
+              window.location.href = "/profile?status=passwordupdated";
+            } else {
+              console.error('failed to update data');
+            }
+          }
+        }
+      }
+    })
+
+    function confirmation()
+    {
+      const userConfirmed = confirm("Are you sure you wish to change your password?");
+      return userConfirmed;
+    }
+  </script>
+
+  <%- include("partials/footer.ejs") %>
+</body>
+</html>

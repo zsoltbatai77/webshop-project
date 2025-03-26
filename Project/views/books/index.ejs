@@ -1,0 +1,78 @@
+<html lang="en">
+  <%- include("../partials/header.ejs") %>
+  <body>
+    <%- include("../partials/nav.ejs") %>
+
+    <!-- Középre igazított keresősáv konténer -->
+    <div class="search-bar-container">
+      <form action="/books" method="GET" class="search-form">
+        <!-- Search Input -->
+        <input type="text" name="searchbar" placeholder="Search for books..." class="search-input">
+
+        <!-- Category Dropdown -->
+        <select name="category" class="category-dropdown">
+          <option value="">Select Category</option>
+          <option value="fiction">Fiction</option>
+          <option value="non-fiction">Non-fiction</option>
+          <option value="adventure">Adventure</option>
+          <option value="realism">Realism</option>
+          <option value="fantasy">Fantasy</option>
+          <option value="drama">Drama</option>
+          <option value="romance">Romance</option>
+          <option value="mystery">Mystery</option>
+          <option value="psychology">Psychology</option>
+          <option value="science">Science</option>
+          <option value="young adult">Young Adult</option>
+          <option value="philosophy">Philosophy</option>
+          <option value="dystopian">Dystopian</option>
+          <option value="poetry">Poetry</option>
+        </select>
+
+        <!-- Search Button -->
+        <button type="submit" class="search-button">Search</button>
+      </form>
+    </div>
+
+    <!-- Könyvek megjelenítése -->
+    <div class="books content">
+      <h2>All Books</h2>
+
+      <% if (books.length > 0) { %>
+        <div class="book-container">
+          <% books.forEach(book => { %>
+            <div class="book-item">
+              <!-- Link a single book oldalra -->
+              <a href="/books/<%= book._id %>">
+                <img src="<%= book.imagePath %>" alt="<%= book.title %>" class="book-image">
+                <h3 class="title"><%= book.title %></h3>
+              </a>
+              <p class="description"><%= book.description %></p>
+              <form action="/cart/add" method="POST" onsubmit="checkLogin(event)">
+                <input type="hidden" name="bookId" value="<%= book._id %>">
+                <button type="submit" class="add-to-cart-button">Kosárba</button>
+              </form>
+
+              <script>
+                // Make sure isAuthenticated is a boolean or can be serialized properly
+                function checkLogin(event) {
+                  const isAuthenticated = <%= JSON.stringify(isAuthenticated) %>;
+                  if (!isAuthenticated) {
+                    event.preventDefault();  // Prevent form submission if not authenticated
+                    alert("Please sign in to add items to the cart.");
+                  }
+                }
+              </script>
+
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p>There are no books to display...</p>
+      <% } %>
+      
+    </div>
+
+    <%- include("../partials/footer.ejs") %>
+
+  </body>
+</html>
